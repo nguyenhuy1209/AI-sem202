@@ -130,39 +130,6 @@ class GraphSearch:
         self.problem = problem
 
     def uninformedSearch(self, frontier):
-        # problem = self.problem
-
-        # explored = []
-
-        # startNode = Node(problem.getStartState())
-        # if problem.isGoalState(startNode.getState()):
-        #     return startNode.getAction()
-
-        # frontier.push(startNode)
-
-        # while not frontier.isEmpty():
-        #     node = frontier.pop()
-        #     node_state = node.getState()
-        #     print(node_state)
-        #     node_action = node.getAction()
-
-        #     explored.append(node)
-        #     successors = problem.expand(node_state)[::-1]
-        #     # print(successors)
-        #     for successor in successors:
-        #         child_state, child_action, stepcost = successor
-        #         # print(successor)
-        #         # print('#########')
-        #         child = Node(child_state, node, node_action + [child_action])
-        #         # if child not in explored and child not in frontier:
-        #         if child not in explored:
-        #             if problem.isGoalState(child_state):
-        #                 return node_action + [child_action]
-        #             frontier.push(child)
-        #             # print(frontier.list)
-
-        # return FAILURE
-    
         problem = self.problem
 
         explored = []
@@ -178,13 +145,14 @@ class GraphSearch:
             if problem.isGoalState(node_state):
                 return node_action
 
-            explored.append(node)
-            successors = problem.expand(node_state)
-            for successor in successors:
-                child_state, child_action, stepcost = successor
-                child = Node(child_state, node, node_action + [child_action])
-                if child not in explored and child not in frontier.list:
-                    frontier.push(child)
+            if node_state not in explored:
+                explored.append(node_state)
+                successors = problem.expand(node_state)
+                for successor in successors:
+                    child_state, child_action, stepcost = successor
+                    if child_state not in explored:
+                        child = Node(child_state, node, node_action + [child_action])
+                        frontier.push(child)
         return FAILURE
     
     def uniformCostSearch(self):
@@ -265,38 +233,6 @@ class GraphSearch:
         return FAILURE
 
     def depthLimitedSearch(self, limit):
-        # problem = self.problem
-
-        # frontier = util.Stack()
-        # explored = []
-
-        # startNode = Node(problem.getStartState())
-        # if problem.isGoalState(startNode.getState()):
-        #     return startNode.getAction()
-        # elif limit == 0:
-        #     return CUTOFF
-        # else:
-        #     frontier.push(startNode)
-        #     while not frontier.isEmpty():
-        #         node = frontier.pop()
-        #         node_state = node.getState()
-        #         node_action = node.getAction()
-        #         node_depth = node.getDepth()
-
-        #         if node_depth < limit:
-        #             explored.append(node)
-        #             successors = problem.getSuccessors(node_state)
-        #             successors = successors[::-1]
-        #             for successor in successors:
-        #                 child_state, child_action, stepcost = successor
-        #                 child = Node(child_state, node, node_action + [child_action], node_depth+1)
-        #                 if child not in explored and child not in frontier:
-        #                     if problem.isGoalState(child_state):
-        #                         return node_action + [child_action]
-        #                     frontier.push(child)
-        #     print(frontier.list)
-        #     return FAILURE
-
         problem = self.problem
 
         frontier = util.Stack()
